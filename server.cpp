@@ -36,20 +36,19 @@ void DoStuff(void)
 
 void Server(void)
 {
+    sf::SelectorTCP Selector;
 	sf::TcpListener listener;
-	listener.listen(PORT);
-	listener.accept(socket);
-	std::cout << "New client connected: " << socket.getRemoteAddress() << std::endl;
-}
 
-bool Client(void)
-{
-	if(socket.connect(IPADDRESS, PORT) == sf::Socket::Done)
-	{
-		std::cout << "Connected\n";
-		return true;
+	if(!listener.listen(PORT)){
+        printf("no Listner!");
 	}
-	return false;
+
+	Selector.Add(Listener);
+
+
+
+	//listener.accept(socket);
+	std::cout << "New client connected: " << socket.getRemoteAddress() << std::endl;
 }
 
 void GetInput(void)
@@ -67,29 +66,13 @@ void GetInput(void)
 
 int main(int argc, char* argv[])
 {
-	sf::Thread* thread = 0;
+	Server();
 
-	char who;
-	std::cout << "Do you want to be a server (s) or a client (c) ? ";
-	std::cin  >> who;
-
-	if (who == 's')
-		Server();
-	else
-		Client();
-
-	thread = new sf::Thread(&DoStuff);
-	thread->launch();
 
 	while(!quit)
 	{
 		GetInput();
 	}
 
-	if(thread)
-	{
-		thread->wait();
-		delete thread;
-	}
 	return 0;
 }
