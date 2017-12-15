@@ -8,11 +8,13 @@ std::string msgSend;
 
 sf::TcpSocket socket;
 sf::Mutex globalMutex;
+
 bool quit = false;
 
 void DoStuff(void)
 {
 	static std::string oldMsg;
+
 	while(!quit)
 	{
 		sf::Packet packetSend;
@@ -46,10 +48,8 @@ bool Client(void)
 {
 	if(socket.connect(IPADDRESS, PORT) == sf::Socket::Done)
 	{
-		std::cout << "Connected\n";
-		return true;
+
 	}
-	return false;
 }
 
 void GetInput(void)
@@ -57,8 +57,7 @@ void GetInput(void)
 	std::string s;
 	std::cout << "\nEnter \"exit\" to quit or message to send: ";
 	getline(std::cin,s);
-	if(s == "exit")
-		quit = true;
+	if(s == "exit")	quit = true;
 	globalMutex.lock();
 	msgSend = s;
 	globalMutex.unlock();
@@ -67,29 +66,5 @@ void GetInput(void)
 
 int main(int argc, char* argv[])
 {
-	sf::Thread* thread = 0;
 
-	char who;
-	std::cout << "Do you want to be a server (s) or a client (c) ? ";
-	std::cin  >> who;
-
-	if (who == 's')
-		Server();
-	else
-		Client();
-
-	thread = new sf::Thread(&DoStuff);
-	thread->launch();
-
-	while(!quit)
-	{
-		GetInput();
-	}
-
-	if(thread)
-	{
-		thread->wait();
-		delete thread;
-	}
-	return 0;
 }
