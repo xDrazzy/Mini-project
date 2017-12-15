@@ -3,36 +3,39 @@
 
 
 
-const unsigned short PORT = ; //hej bitch
+const unsigned short PORT = ;
 const std::string IPADDRESS(" ");
 
-std::string msgSend;
+string msgSend;
 
-sf::TcpSocket socket;
-sf::Mutex globalMutex;
+using namespace std;
+usinig namespace sf;
+
+TcpSocket socket;
+Mutex globalMutex;
 
 bool quit = false;
 
 void DoStuff(void)
 {
-	static std::string oldMsg;
+	static string oldMsg;
 
 	while(!quit)
 	{
-		sf::Packet packetSend;
+		Packet packetSend;
 		globalMutex.lock();
 		packetSend << msgSend;
 		globalMutex.unlock();
 
 		socket.send(packetSend);
 
-		std::string msg;
-		sf::Packet packetReceive;
+		string msg;
+		Packet packetReceive;
 
 		socket.receive(packetReceive);
 		if ((packetReceive >> msg) && oldMsg != msg && !msg.empty())
 		{
-			std::cout << msg << std::endl;
+			cout << msg << endl;
 			oldMsg = msg;
 		}
 	}
@@ -40,15 +43,15 @@ void DoStuff(void)
 
 void Server(void)
 {
-	sf::TcpListener listener;
+	TcpListener listener;
 	listener.listen(PORT);
 	listener.accept(socket);
-	std::cout << "New client connected: " << socket.getRemoteAddress() << std::endl;
+	cout << "New client connected: " << socket.getRemoteAddress() << endl;
 }
 
 bool Client(void)
 {
-	if(socket.connect(IPADDRESS, PORT) == sf::Socket::Done)
+	if(socket.connect(IPADDRESS, PORT) == Socket::Done)
 	{
 
 	}
@@ -56,12 +59,13 @@ bool Client(void)
 
 void GetInput(void)
 {
-	std::string s;
-	std::cout << "\nEnter \"exit\" to quit or message to send: ";
-	getline(std::cin,s);
-	if(s == "exit")	quit = true;
+	cout << "\nEnter \"exit\" to quit or message to send: ";
+	cin >> string text;
+
+	if(text == "exit")	quit = true;
+
 	globalMutex.lock();
-	msgSend = s;
+	msgSend = text;
 	globalMutex.unlock();
 }
 
