@@ -2,7 +2,7 @@
 #include <SFML/Network.hpp>
 
 const unsigned short PORT = ;
-const std::string IPADDRESS(" ");//change to suit your needs
+const std::string IPADDRESS(" ");
 
 std::string msgSend;
 
