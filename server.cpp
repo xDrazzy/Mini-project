@@ -45,7 +45,15 @@ void Server(void)
 
 	Selector.Add(Listener);
 
-
+    while (true)
+    {
+        unsigned int NbSockets = Selector.Wait();
+        
+        for (unsigned int i = 0; i < NbSockets; ++i)
+        {
+            sf::SocketTCP Socket = Selector.GetSocketReady(i);
+        }
+    }
 
 	//listener.accept(socket);
 	std::cout << "New client connected: " << socket.getRemoteAddress() << std::endl;
