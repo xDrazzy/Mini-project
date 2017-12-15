@@ -1,7 +1,9 @@
 #include <iostream>
 #include <SFML/Network.hpp>
 
-const unsigned short PORT = ;
+
+
+const unsigned short PORT = ; //hej bitch
 const std::string IPADDRESS(" ");
 
 std::string msgSend;
